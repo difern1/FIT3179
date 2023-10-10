@@ -1,0 +1,31 @@
+
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": { "text": "Highest Total Emissions" },
+    "data": {
+        "url": "https://raw.githubusercontent.com/difern1/FIT3179/main/emissions.csv"
+    },
+    "transform": [
+        {
+            "calculate": "toNumber(datum.Total)",
+            "as": "TotalNumeric"
+        },
+        {
+            "sort": [{ "field": "TotalNumeric", "order": "descending" }],
+            "window": [{"op": "row_number", "as": "rank"}],
+            "frame": [null, null]
+        },
+        {
+            "filter": "datum.rank > 1 && datum.rank < 7"
+        }
+    ],
+    "mark": "bar",
+    "encoding": {
+        "x": { "field": "TotalNumeric", "type": "quantitative" },
+        "y": { 
+            "field": "Country", 
+            "type": "nominal",
+            "sort": "-x"  
+        }
+    }
+}
